@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
 
-const MODEL = "gemini-2.5-flash";
+const MODEL = "gemini-3.8-flash";
 
 function buildPrompt(goal: string, resume: string, hoursPerWeek?: number, months?: number) {
   return `You are a career mentor for Indian college students aiming at fresher-level jobs.
@@ -55,7 +55,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Server is missing its API key." }, { status: 500 });
     }
 
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+      const ai = new GoogleGenAI({ apiKey: (process.env.GEMINI_API_KEY || "").trim() });
     const prompt = buildPrompt(goal.trim(), (resume || "").trim(), hoursPerWeek, months);
 
     for (let attempt = 0; attempt < 2; attempt++) {
